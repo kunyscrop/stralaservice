@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STRALA Service</title>
+    <!-- Chargement de Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for Inter font */
+        body {
+            font-family: 'Inter', sans-serif;
+            @apply bg-gray-50 text-gray-800;
+        }
+        /* Adjust body padding to prevent content from being hidden by fixed navigation bar */
+        @media (max-width: 767px) {
+            body {
+                padding-bottom: 72px; /* Space for fixed bottom navigation on mobile */
+            }
+        }
+        /* Styles for the admin modal */
+        .modal-overlay {
+            @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1000];
+        }
+        .modal-content {
+            @apply bg-white p-8 rounded-lg shadow-2xl max-w-md w-11/12 text-center relative;
+        }
+        .modal-close-button {
+            @apply absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl font-bold cursor-pointer;
+        }
+        /* Styles for service detail sections */
+        .service-detail-section {
+            display: none; /* Hidden by default */
+        }
+        /* Keyframe for a subtle fade-in effect */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Page Header -->
+    <header class="bg-gray-900 text-white p-4 shadow-lg z-50
+                   fixed top-0 left-0 w-full
+                   md:relative md:flex md:justify-between md:items-center">
+        <div class="flex justify-between items-center w-full md:w-auto">
+            <h1 class="text-3xl font-bold tracking-tight rounded-md p-2">STRALA Service</h1>
+            <!-- Administrator Button (visible on all screen sizes) -->
+            <button id="adminButton" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out
+                                           md:ml-4">
+                Administrateur
+            </button>
+        </div>
+
+        <!-- PC Navigation (visible at top) -->
+        <nav class="hidden md:block">
+            <ul class="flex space-x-6">
+                <li><a href="#accueil" class="text-white hover:text-blue-400 transition duration-300 ease-in-out text-lg font-medium p-2 rounded-md">Accueil</a></li>
+                <li><a href="#clients" class="text-white hover:text-blue-400 transition duration-300 ease-in-out text-lg font-medium p-2 rounded-md">Clients</a></li>
+                <li><a href="#a-propos" class="text-white hover:text-blue-400 transition duration-300 ease-in-out text-lg font-medium p-2 rounded-md">À Propos</a></li>
+                <li><a href="#contacts" class="text-white hover:text-blue-400 transition duration-300 ease-in-out text-lg font-medium p-2 rounded-md">Contacts</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Page Content -->
+    <main class="flex-grow container mx-auto p-4 md:p-8 mt-20 md:mt-0">
+
+        <!-- Main container for services and their details -->
+        <div id="servicesContainer">
+            <!-- Home Section - Main Services -->
+            <section id="accueil" class="mb-16 bg-white p-6 rounded-xl shadow-lg animate-fadeIn">
+                <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-8 mt-4">Nos Services</h2>
+                <p class="text-lg text-center text-gray-600 mb-10 max-w-2xl mx-auto">
+                    Découvrez l'étendue de nos expertises pour transformer vos espaces. Cliquez sur un service pour en savoir plus.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Service Card: Plafond -->
+                    <div class="service-card cursor-pointer bg-gray-50 border border-gray-200 rounded-xl shadow-md overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out" data-service="plafond">
+                        <img src="https://placehold.co/600x400/E0E7FF/3F51B5?text=Plafond" alt="Image de Plafond" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold text-gray-800 mb-2">Plafond</h3>
+                            <p class="text-gray-600">Conception et installation de plafonds modernes, suspendus ou décoratifs pour tous types d'espaces.</p>
+                        </div>
+                    </div>
+                    <!-- Service Card: Peinture -->
+                    <div class="service-card cursor-pointer bg-gray-50 border border-gray-200 rounded-xl shadow-md overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out" data-service="peinture">
+                        <img src="https://placehold.co/600x400/E0E7FF/3F51B5?text=Peinture" alt="Image de Peinture" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold text-gray-800 mb-2">Peinture</h3>
+                            <p class="text-gray-600">Application de peintures intérieures et extérieures avec des finitions impeccables et durables.</p>
+                        </div>
+                    </div>
+                    <!-- Service Card: Carrelage -->
+                    <div class="service-card cursor-pointer bg-gray-50 border border-gray-200 rounded-xl shadow-md overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out" data-service="carrelage">
+                        <img src="https://placehold.co/600x400/E0E7FF/3F51B5?text=Carrelage" alt="Image de Carrelage" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold text-gray-800 mb-2">Carrelage</h3>
+                            <p class="text-gray-600">Pose professionnelle de carrelage au sol et mural, pour un rendu esthétique et résistant.</p>
+                        </div>
+                    </div>
+                    <!-- Service Card: Installation Électrique -->
+                    <div class="service-card cursor-pointer bg-gray-50 border border-gray-200 rounded-xl shadow-md overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out" data-service="installation-electrique">
+                        <img src="https://placehold.co/600x400/E0E7FF/3F51B5?text=Installation+Electrique" alt="Image d'Installation Électrique" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold text-gray-800 mb-2">Installation Électrique</h3>
+                            <p class="text-gray-600">Solutions complètes pour vos installations électriques, conformes aux normes de sécurité.</p>
+                        </div>
+                    </div>
+                    <!-- Service Card: Mastiquage des Murs -->
+                    <div class="service-card cursor-pointer bg-gray-50 border border-gray-200 rounded-xl shadow-md overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out" data-service="mastiquage-murs">
+                        <img src="https://placehold.co/600x400/E0E7FF/3F51B5?text=Mastiquage+des+Murs" alt="Image de Mastiquage des Murs" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold text-gray-800 mb-2">Mastiquage des Murs</h3>
+                            <p class="text-gray-600">Préparation minutieuse des surfaces murales pour une base lisse avant peinture ou tapisserie.</p>
+                        </div>
+                    </div>
+                    <!-- Service Card: Décoration Interne des Maisons -->
+                    <div class="service-card cursor-pointer bg-gray-50 border border-gray-200 rounded-xl shadow-md overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out" data-service="decoration-interne">
+                        <img src="https://placehold.co/600x400/E0E7FF/3F51B5?text=Decoration+Interne" alt="Image de Décoration Interne" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold text-gray-800 mb-2">Décoration Interne des Maisons</h3>
+                            <p class="text-gray-600">Aménagement et décoration d'intérieur pour créer des espaces uniques et personnalisés.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Service Detail Sections (initially hidden) -->
+            <section id="detail-plafond" class="service-detail-section mb-16 bg-white p-6 rounded-xl shadow-lg animate-fadeIn">
+                <button class="back-button bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg mb-6 transition duration-300 ease-in-out">
+                    &larr; Retour aux Services
+                </button>
+                <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-8 mt-4">Détails : Plafond</h2>
+                <p class="text-lg text-center text-gray-600 mb-10 max-w-2xl mx-auto">
+                    Découvrez nos réalisations en matière de plafonds, alliant esthétisme et fonctionnalité.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <img src="https://placehold.co/600x400/A7F3D0/047857?text=Plafond+1" alt="Image de Plafond 1" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/A7F3D0/047857?text=Plafond+2" alt="Image de Plafond 2" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/A7F3D0/047857?text=Plafond+3" alt="Image de Plafond 3" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/A7F3D0/047857?text=Plafond+4" alt="Image de Plafond 4" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/A7F3D0/047857?text=Plafond+5" alt="Image de Plafond 5" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/A7F3D0/047857?text=Plafond+6" alt="Image de Plafond 6" class="w-full h-48 object-cover rounded-lg shadow-md">
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">Notre Expertise en Plafonds</h3>
+                <p class="text-gray-700 leading-relaxed">
+                    Chez STRALA Service, nous maîtrisons l'art de la conception et de l'installation de plafonds. Que vous recherchiez un faux plafond en plâtre, un plafond tendu moderne, ou des solutions acoustiques, notre équipe utilise des matériaux de qualité supérieure et des techniques innovantes pour garantir une finition impeccable. Chaque projet est adapté à vos besoins spécifiques, transformant votre espace avec élégance et fonctionnalité.
+                </p>
+            </section>
+
+            <section id="detail-peinture" class="service-detail-section mb-16 bg-white p-6 rounded-xl shadow-lg animate-fadeIn">
+                <button class="back-button bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg mb-6 transition duration-300 ease-in-out">
+                    &larr; Retour aux Services
+                </button>
+                <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-8 mt-4">Détails : Peinture</h2>
+                <p class="text-lg text-center text-gray-600 mb-10 max-w-2xl mx-auto">
+                    Découvrez nos réalisations en matière de peinture, transformant chaque mur en une œuvre d'art.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <img src="https://placehold.co/600x400/FFD1DC/E91E63?text=Peinture+1" alt="Image de Peinture 1" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/FFD1DC/E91E63?text=Peinture+2" alt="Image de Peinture 2" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/FFD1DC/E91E63?text=Peinture+3" alt="Image de Peinture 3" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/FFD1DC/E91E63?text=Peinture+4" alt="Image de Peinture 4" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/FFD1DC/E91E63?text=Peinture+5" alt="Image de Peinture 5" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/FFD1DC/E91E63?text=Peinture+6" alt="Image de Peinture 6" class="w-full h-48 object-cover rounded-lg shadow-md">
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">Notre Expertise en Peinture</h3>
+                <p class="text-gray-700 leading-relaxed">
+                    STRALA Service offre des services de peinture intérieure et extérieure de haute qualité. Nous utilisons des peintures écologiques et durables, appliquées par des professionnels expérimentés. Que ce soit pour une nouvelle construction ou une rénovation, nous assurons une préparation minutieuse des surfaces et une finition impeccable, pour des couleurs vibrantes et un rendu parfait qui résiste au temps.
+                </p>
+            </section>
+
+            <section id="detail-carrelage" class="service-detail-section mb-16 bg-white p-6 rounded-xl shadow-lg animate-fadeIn">
+                <button class="back-button bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg mb-6 transition duration-300 ease-in-out">
+                    &larr; Retour aux Services
+                </button>
+                <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-8 mt-4">Détails : Carrelage</h2>
+                <p class="text-lg text-center text-gray-600 mb-10 max-w-2xl mx-auto">
+                    Découvrez nos réalisations en matière de carrelage, alliant durabilité et esthétisme.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <img src="https://placehold.co/600x400/D1C4E9/512DA8?text=Carrelage+1" alt="Image de Carrelage 1" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/D1C4E9/512DA8?text=Carrelage+2" alt="Image de Carrelage 2" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/D1C4E9/512DA8?text=Carrelage+3" alt="Image de Carrelage 3" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/D1C4E9/512DA8?text=Carrelage+4" alt="Image de Carrelage 4" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/D1C4E9/512DA8?text=Carrelage+5" alt="Image de Carrelage 5" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/D1C4E9/512DA8?text=Carrelage+6" alt="Image de Carrelage 6" class="w-full h-48 object-cover rounded-lg shadow-md">
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">Notre Expertise en Carrelage</h3>
+                <p class="text-gray-700 leading-relaxed">
+                    La pose de carrelage est un art que nous maîtrisons à la perfection. Que ce soit pour vos sols, vos murs, ou des projets spécifiques comme les salles de bain et cuisines, STRALA Service garantit une installation précise et durable. Nous travaillons avec une large gamme de matériaux, du grès cérame à la faïence, pour créer des surfaces à la fois belles et fonctionnelles.
+                </p>
+            </section>
+
+            <section id="detail-installation-electrique" class="service-detail-section mb-16 bg-white p-6 rounded-xl shadow-lg animate-fadeIn">
+                <button class="back-button bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg mb-6 transition duration-300 ease-in-out">
+                    &larr; Retour aux Services
+                </button>
+                <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-8 mt-4">Détails : Installation Électrique</h2>
+                <p class="text-lg text-center text-gray-600 mb-10 max-w-2xl mx-auto">
+                    Découvrez nos solutions d'installation électrique, sécurisées et conformes aux normes.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <img src="https://placehold.co/600x400/FFECB3/FFA000?text=Electrique+1" alt="Image d'Installation Électrique 1" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/FFECB3/FFA000?text=Electrique+2" alt="Image d'Installation Électrique 2" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/FFECB3/FFA000?text=Electrique+3" alt="Image d'Installation Électrique 3" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/FFECB3/FFA000?text=Electrique+4" alt="Image d'Installation Électrique 4" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/FFECB3/FFA000?text=Electrique+5" alt="Image d'Installation Électrique 5" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/FFECB3/FFA000?text=Electrique+6" alt="Image d'Installation Électrique 6" class="w-full h-48 object-cover rounded-lg shadow-md">
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">Notre Expertise en Installation Électrique</h3>
+                <p class="text-gray-700 leading-relaxed">
+                    STRALA Service propose des solutions complètes et sécurisées pour toutes vos installations électriques. Nos électriciens qualifiés interviennent pour les nouvelles installations, les rénovations, les mises aux normes, et le dépannage. Nous garantissons des systèmes fiables et performants, en respectant scrupuleusement les normes de sécurité en vigueur pour votre tranquillité d'esprit.
+                </p>
+            </section>
+
+            <section id="detail-mastiquage-murs" class="service-detail-section mb-16 bg-white p-6 rounded-xl shadow-lg animate-fadeIn">
+                <button class="back-button bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg mb-6 transition duration-300 ease-in-out">
+                    &larr; Retour aux Services
+                </button>
+                <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-8 mt-4">Détails : Mastiquage des Murs</h2>
+                <p class="text-lg text-center text-gray-600 mb-10 max-w-2xl mx-auto">
+                    Découvrez l'importance du mastiquage pour des murs parfaitement lisses.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <img src="https://placehold.co/600x400/CFD8DC/607D8B?text=Mastiquage+1" alt="Image de Mastiquage 1" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/CFD8DC/607D8B?text=Mastiquage+2" alt="Image de Mastiquage 2" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/CFD8DC/607D8B?text=Mastiquage+3" alt="Image de Mastiquage 3" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/CFD8DC/607D8B?text=Mastiquage+4" alt="Image de Mastiquage 4" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/CFD8DC/607D8B?text=Mastiquage+5" alt="Image de Mastiquage 5" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/CFD8DC/607D8B?text=Mastiquage+6" alt="Image de Mastiquage 6" class="w-full h-48 object-cover rounded-lg shadow-md">
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">Notre Expertise en Mastiquage des Murs</h3>
+                <p class="text-gray-700 leading-relaxed">
+                    Le mastiquage des murs est une étape cruciale pour obtenir une finition parfaite avant la peinture ou la pose de revêtements. Chez STRALA Service, nos experts préparent méticuleusement vos surfaces, comblant les fissures, lissant les imperfections et assurant une base uniforme. Ce travail de précision garantit un rendu final impeccable et durable pour vos murs.
+                </p>
+            </section>
+
+            <section id="detail-decoration-interne" class="service-detail-section mb-16 bg-white p-6 rounded-xl shadow-lg animate-fadeIn">
+                <button class="back-button bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg mb-6 transition duration-300 ease-in-out">
+                    &larr; Retour aux Services
+                </button>
+                <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-8 mt-4">Détails : Décoration Interne des Maisons</h2>
+                <p class="text-lg text-center text-gray-600 mb-10 max-w-2xl mx-auto">
+                    Découvrez nos projets de décoration intérieure, créant des espaces uniques et personnalisés.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <img src="https://placehold.co/600x400/FFE0B2/FF6F00?text=Decoration+1" alt="Image de Décoration 1" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/FFE0B2/FF6F00?text=Decoration+2" alt="Image de Décoration 2" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/FFE0B2/FF6F00?text=Decoration+3" alt="Image de Décoration 3" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/FFE0B2/FF6F00?text=Decoration+4" alt="Image de Décoration 4" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/FFE0B2/FF6F00?text=Decoration+5" alt="Image de Décoration 5" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="https://placehold.co/600x400/FFE0B2/FF6F00?text=Decoration+6" alt="Image de Décoration 6" class="w-full h-48 object-cover rounded-lg shadow-md">
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">Notre Expertise en Décoration Interne</h3>
+                <p class="text-gray-700 leading-relaxed">
+                    La décoration intérieure est l'art de créer des ambiances qui reflètent votre personnalité et votre style de vie. STRALA Service vous accompagne dans l'aménagement de vos espaces, le choix des couleurs, des textures, du mobilier et des accessoires. Nous transformons votre intérieur en un lieu harmonieux et fonctionnel, où chaque détail compte pour votre bien-être.
+                </p>
+            </section>
+        </div>
+
+        <hr class="my-16 border-gray-200">
+
+        <!-- Clients Section -->
+        <section id="clients" class="mb-16 bg-white p-6 rounded-xl shadow-lg animate-fadeIn">
+            <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-8 mt-4">Nos Clients</h2>
+            <p class="text-lg text-center text-gray-600 mb-10 max-w-2xl mx-auto">
+                La satisfaction de nos clients est notre priorité. Voici quelques-uns de nos projets réussis et témoignages.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Client Testimonial Example 1 -->
+                <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 shadow-md">
+                    <p class="italic text-gray-700 mb-4">"STRALA Service a transformé notre maison. Le travail sur le plafond et la peinture est impeccable. Nous sommes ravis du résultat !"</p>
+                    <p class="font-semibold text-gray-800">- Famille Dupont</p>
+                </div>
+                <!-- Client Testimonial Example 2 -->
+                <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 shadow-md">
+                    <p class="italic text-gray-700 mb-4">"Professionnalisme et efficacité. L'installation électrique a été réalisée dans les délais et avec une grande rigueur. Je recommande vivement."</p>
+                    <p class="font-semibold text-gray-800">- M. Jean Pierre</p>
+                </div>
+                <!-- Add more testimonials or project photos here -->
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-200">
+
+        <!-- About Us Section -->
+        <section id="a-propos" class="mb-16 bg-white p-6 rounded-xl shadow-lg animate-fadeIn">
+            <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-8 mt-4">À Propos de Nous</h2>
+            <div class="flex flex-col md:flex-row items-center gap-8">
+                <div class="md:w-1/2 flex-shrink-0">
+                    <img src="images/a_propos1.jpg" alt="Image de l'équipe STRALA Service" class="w-full h-auto rounded-xl shadow-md object-cover">
+                </div>
+                <div class="md:w-1/2">
+                    <h3 class="text-3xl font-bold text-gray-900 mb-4">Notre Histoire et Notre Engagement</h3>
+                    <p class="text-gray-700 leading-relaxed mb-4">
+                        STRALA Service est née de la passion de transformer les espaces et de concrétiser les visions de nos clients. Depuis notre création, nous nous sommes engagés à fournir des services de construction et de rénovation de la plus haute qualité en République Démocratique du Congo.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed mb-4">
+                        Notre équipe est composée d'experts qualifiés et dévoués, chacun apportant son savoir-faire unique dans des domaines tels que la peinture, le carrelage, les installations électriques, et la décoration intérieure. Nous croyons en une approche personnalisée, où chaque projet est traité avec une attention méticuleuse aux détails et un respect strict des délais.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed">
+                        Chez STRALA Service, nous ne construisons pas seulement des bâtiments, nous bâtissons des relations durables basées sur la confiance et l'excellence. Votre satisfaction est le moteur de notre succès.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-200">
+
+        <!-- Contact Section -->
+        <section id="contacts" class="mb-16 bg-white p-6 rounded-xl shadow-lg animate-fadeIn">
+            <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-8 mt-4">Contactez-nous</h2>
+            <p class="text-lg text-center text-gray-600 mb-10 max-w-2xl mx-auto">
+                N'hésitez pas à nous contacter pour toute question, demande de devis ou pour discuter de votre prochain projet.
+            </p>
+            <div class="flex flex-col items-center space-y-4 text-xl text-gray-700">
+                <p class="flex items-center">
+                    <svg class="w-6 h-6 mr-3 text-green-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg>
+                    <strong>WhatsApp:</strong> <a href="https://wa.me/243907385337" target="_blank" class="text-blue-600 hover:underline ml-2">+243 907385337</a>
+                </p>
+                <p class="flex items-center">
+                    <svg class="w-6 h-6 mr-3 text-blue-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l1.3 9.137a1 1 0 01-.285.836l-2.542 2.542a1 1 0 00-.285.836v.001c.154.545.688.836 1.233.836h6.172c.545 0 1.079-.291 1.233-.836v-.001a1 1 0 00-.285-.836l-2.542-2.542a1 1 0 01-.285-.836l1.3-9.137A1 1 0 0116.847 2H19a1 1 0 011 1v14a1 1 0 01-1 1H3a1 1 0 01-1-1V3z"></path></svg>
+                    <strong>Appel:</strong> <a href="tel:+243976116614" class="text-blue-600 hover:underline ml-2">+243 972625065</a>
+                </p>
+                <p class="flex items-center">
+                    <svg class="w-6 h-6 mr-3 text-blue-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l1.3 9.137a1 1 0 01-.285.836l-2.542 2.542a1 1 0 00-.285.836v.001c.154.545.688.836 1.233.836h6.172c.545 0 1.079-.291 1.233-.836v-.001a1 1 0 00-.285-.836l-2.542-2.542a1 1 0 01-.285-.836l1.3-9.137A1 1 0 0116.847 2H19a1 1 0 011 1v14a1 1 0 01-1 1H3a1 1 0 01-1-1V3z"></path></svg>
+                    <strong>TikTok:</strong> <a href="https://www.tiktok.com/@stralaservice1?is_from_webapp=1&sender_device=pc" class="text-blue-600 hover:underline ml-2">TikTok</a>
+                </p>
+                <p class="flex items-center">
+                    <svg class="w-6 h-6 mr-3 text-red-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
+                    <strong>Email:</strong> <a href="mailto:stralasrv@gmail.com" class="text-blue-600 hover:underline ml-2">stralasrv@gmail.com</a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Mobile Navigation (fixed at bottom) -->
+    <nav class="md:hidden fixed bottom-0 left-0 w-full bg-gray-900 text-white p-2 shadow-lg z-50">
+        <ul class="flex justify-around items-center h-full">
+            <li><a href="#accueil" class="flex flex-col items-center text-white hover:text-blue-400 transition duration-300 ease-in-out text-sm font-medium p-1 rounded-md">
+                <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+                Accueil
+            </a></li>
+            <li><a href="#clients" class="flex flex-col items-center text-white hover:text-blue-400 transition duration-300 ease-in-out text-sm font-medium p-1 rounded-md">
+                <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18H6a2 2 0 01-2-2v-3.334A6.974 6.974 0 0110 9c2.5 0 4.874 1.144 6.427 3.111V16a2 2 0 01-2 2z"></path></svg>
+                Clients
+            </a></li>
+            <li><a href="#a-propos" class="flex flex-col items-center text-white hover:text-blue-400 transition duration-300 ease-in-out text-sm font-medium p-1 rounded-md">
+                <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                À Propos
+            </a></li>
+            <li><a href="#contacts" class="flex flex-col items-center text-white hover:text-blue-400 transition duration-300 ease-in-out text-sm font-medium p-1 rounded-md">
+                <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a8 8 0 00-8 8c0 2.406.96 4.606 2.513 6.19l-.487.81A1 1 0 004 18h12a1 1 0 00.974-1.406l-.487-.81A8 8 0 0010 2zm0 14a6 6 0 100-12 6 6 0 000 12z" clip-rule="evenodd"></path></svg>
+                Contacts
+            </a></li>
+        </ul>
+    </nav>
+
+    <!-- Administrator Modal (initially hidden) -->
+    <div id="adminModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <span id="closeModal" class="modal-close-button">&times;</span>
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Accès Administrateur</h3>
+            <p class="text-gray-700 mb-6">
+                Veuillez entrer vos identifiants pour accéder au panneau d'administration.
+            </p>
+            <form id="adminLoginForm" class="flex flex-col gap-4">
+                <input type="email" id="adminEmail" placeholder="Email" class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" value="stralasrv@gmail.com">
+                <input type="password" id="adminPassword" placeholder="Mot de passe" class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" value="strala243SRV">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out">
+                    Se connecter
+                </button>
+            </form>
+            <p id="loginMessage" class="mt-4 text-sm font-medium"></p>
+            <p class="mt-6 text-xs text-gray-500">
+                <strong class="text-red-600">ATTENTION:</strong> Ceci est une démonstration côté client. Pour une application réelle, un système d'authentification sécurisé avec un serveur est indispensable. Vos identifiants sont visibles dans le code.
+            </p>
+        </div>
+    </div>
+
+    <!-- JavaScript for Admin Button and Service Details -->
+    <script>
+        // --- Admin Modal Management ---
+        const adminButton = document.getElementById('adminButton');
+        const adminModal = document.getElementById('adminModal');
+        const closeModalButton = document.getElementById('closeModal');
+        const adminLoginForm = document.getElementById('adminLoginForm');
+        const adminEmailInput = document.getElementById('adminEmail');
+        const adminPasswordInput = document.getElementById('adminPassword');
+        const loginMessage = document.getElementById('loginMessage');
+
+        // Show the admin modal
+        adminButton.addEventListener('click', function() {
+            adminModal.classList.remove('hidden');
+            loginMessage.textContent = ''; // Clear previous messages
+            adminEmailInput.value = 'stralasrv@gmail.com'; // Pre-fill for convenience
+            adminPasswordInput.value = 'strala243SRV'; // Pre-fill for convenience
+        });
+
+        // Close the admin modal
+        closeModalButton.addEventListener('click', function() {
+            adminModal.classList.add('hidden');
+        });
+
+        // Close the modal if clicking outside the content
+        adminModal.addEventListener('click', function(event) {
+            if (event.target === adminModal) {
+                adminModal.classList.add('hidden');
+            }
+        });
+
+        // Handle admin login form submission
+        adminLoginForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const email = adminEmailInput.value;
+            const password = adminPasswordInput.value;
+
+            // Client-side simulation of login
+            if (email === 'stralasrv@gmail.com' && password === 'strala243SRV') {
+                loginMessage.textContent = 'Connexion réussie ! Vous avez accès à la gestion des photos et commentaires (fonctionnalité à développer côté serveur).';
+                loginMessage.classList.remove('text-red-500');
+                loginMessage.classList.add('text-green-500');
+                // In a real app, you would redirect to an admin dashboard or enable admin features.
+                // For this demo, we just show a message.
+            } else {
+                loginMessage.textContent = 'Email ou mot de passe incorrect.';
+                loginMessage.classList.remove('text-green-500');
+                loginMessage.classList.add('text-red-500');
+            }
+        });
+
+        // --- Service Details Management ---
+        const serviceCards = document.querySelectorAll('.service-card');
+        const accueilSection = document.getElementById('accueil');
+        // No need for servicesContainer directly, as we toggle sections within main
+
+        // Hide all service detail sections on load
+        document.querySelectorAll('.service-detail-section').forEach(section => {
+            section.style.display = 'none';
+        });
+
+        // Add click listener to each service card
+        serviceCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const serviceId = this.dataset.service; // Get service ID from data-service attribute
+                const detailSectionId = `detail-${serviceId}`;
+                const detailSection = document.getElementById(detailSectionId);
+
+                if (detailSection) {
+                    accueilSection.style.display = 'none'; // Hide the home section
+                    detailSection.style.display = 'block'; // Show the corresponding detail section
+                    window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top of page
+                }
+            });
+        });
+
+        // Handle "Back to Services" button in each detail section
+        document.querySelectorAll('.back-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const currentDetailSection = this.closest('.service-detail-section');
+                currentDetailSection.style.display = 'none'; // Hide the current detail section
+                accueilSection.style.display = 'block'; // Show the home section
+                window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top of page
+            });
+        });
+    </script>
+</body>
+</html>
