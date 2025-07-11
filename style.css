@@ -3,8 +3,9 @@
 }
 /* Custom styles for Inter font */
 body {
+    min-height: 100vh;
+    background: #f9fafb;
     font-family: 'Inter', sans-serif;
-    @apply bg-gray-50 text-gray-800;
 }
 /* Adjust body padding to prevent content from being hidden by fixed navigation bar */
 @media (max-width: 767px) {
@@ -71,6 +72,9 @@ body {
     animation: fadeIn 0.6s ease-out forwards;
 }
 header {
+    background: linear-gradient(90deg, #1e293b 80%, #2563eb 100%);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(30,41,59,0.08);
     background-image: linear-gradient(rgba(17, 24, 39, 0), rgba(17, 24, 39, 0.42)), url('images/a_propos.jpg');
     background-size: cover;
     background-position: center;
@@ -100,5 +104,62 @@ header {
         width: 60px;
         height: 60px;
         clip-path: circle(50%);
+    }
+}
+main {
+    max-width: 700px;
+    margin: 0 auto;
+}
+section {
+    margin-bottom: 2rem;
+}
+.bg-white {
+    background: #fff;
+}
+.rounded-xl {
+    border-radius: 1rem;
+}
+.shadow-lg {
+    box-shadow: 0 8px 32px rgba(30,41,59,0.10);
+}
+.font-bold {
+    font-weight: 700;
+}
+.font-semibold {
+    font-weight: 600;
+}
+.text-blue-700 {
+    color: #2563eb;
+}
+.text-green-600 {
+    color: #16a34a;
+}
+.text-red-600 {
+    color: #dc2626;
+}
+input, textarea {
+    font-family: inherit;
+    font-size: 1rem;
+}
+button {
+    transition: background 0.2s, color 0.2s;
+}
+#profileImgPreview {
+    border: 2px solid #e5e7eb;
+    background: #f3f4f6;
+}
+#adminChatMessages {
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+}
+@media (max-width: 600px) {
+    main {
+        padding: 0.5rem;
+    }
+    .rounded-xl {
+        border-radius: 0.5rem;
+    }
+    .shadow-lg {
+        box-shadow: 0 2px 8px rgba(30,41,59,0.10);
     }
 }

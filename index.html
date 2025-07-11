@@ -360,6 +360,22 @@
         </div>
     </div>
 
+    <!-- Chatbot Widget -->
+    <div id="chatbotWidget" style="position: fixed; bottom: 90px; right: 20px; z-index: 9999;">
+        <button id="openChatbot" class="bg-blue-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg text-2xl">💬</button>
+        <div id="chatbotBox" class="hidden bg-white border border-gray-300 rounded-xl shadow-2xl w-80 max-w-xs p-4 flex flex-col" style="min-height: 350px;">
+            <div class="flex justify-between items-center mb-2">
+                <span class="font-bold text-gray-800">Chatbot</span>
+                <button id="closeChatbot" class="text-gray-500 hover:text-gray-800 text-xl">&times;</button>
+            </div>
+            <div id="chatMessages" class="flex-1 overflow-y-auto mb-2 text-sm" style="max-height: 180px;"></div>
+            <form id="chatForm" class="flex mt-2">
+                <input id="chatInput" type="text" maxlength="200" placeholder="Écrivez votre message..." class="flex-1 border border-gray-300 rounded-l px-2 py-1 focus:outline-none" required />
+                <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded-r">Envoyer</button>
+            </form>
+        </div>
+    </div>
+
     <!-- JavaScript for Admin Button and Service Details -->
     <script>
         // --- Admin Modal Management ---
@@ -373,6 +389,10 @@
 
         // Show the admin modal
         adminButton.addEventListener('click', function() {
+            // Statistiques : incrémente le nombre total de visiteurs
+            let stats = JSON.parse(localStorage.getItem('adminStats') || '{"total":0,"clicks":0}');
+            stats.total++;
+            localStorage.setItem('adminStats', JSON.stringify(stats));
             adminModal.classList.remove('hidden');
             loginMessage.textContent = ''; // Clear previous messages
             adminEmailInput.value = 'stralasrv@gmail.com'; // Pre-fill for convenience
@@ -400,11 +420,13 @@
 
             // Client-side simulation of login
             if (email === 'stralasrv@gmail.com' && password === 'strala243SRV') {
-                loginMessage.textContent = 'Connexion réussie ! Vous avez accès à la gestion des photos et commentaires (fonctionnalité à développer côté serveur).';
-                loginMessage.classList.remove('text-red-500');
-                loginMessage.classList.add('text-green-500');
-                // In a real app, you would redirect to an admin dashboard or enable admin features.
-                // For this demo, we just show a message.
+                // Statistiques : incrémente le nombre de clics réussis
+                let stats = JSON.parse(localStorage.getItem('adminStats') || '{"total":0,"clicks":0}');
+                stats.clicks++;
+                localStorage.setItem('adminStats', JSON.stringify(stats));
+                // Redirige vers la page admin
+                window.location.href = 'admin.html';
+                return;
             } else {
                 loginMessage.textContent = 'Email ou mot de passe incorrect.';
                 loginMessage.classList.remove('text-green-500');
@@ -446,6 +468,60 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top of page
             });
         });
+
+        // --- Chatbot Widget ---
+        const openChatbot = document.getElementById('openChatbot');
+        const closeChatbot = document.getElementById('closeChatbot');
+        const chatbotBox = document.getElementById('chatbotBox');
+        const chatForm = document.getElementById('chatForm');
+        const chatInput = document.getElementById('chatInput');
+        const chatMessages = document.getElementById('chatMessages');
+
+        // Réponses automatiques du bot (10 réponses différentes)
+        const botReplies = [
+            "Bonjour ! Comment puis-je vous aider ?",
+            "Merci pour votre message !",
+            "Nous vous répondrons très vite.",
+            "Pouvez-vous préciser votre demande ?",
+            "Notre équipe est à votre écoute.",
+            "Avez-vous une question sur nos services ?",
+            "Nous sommes ravis de vous aider !",
+            "Votre satisfaction est notre priorité.",
+            "Merci de nous avoir contactés.",
+            "Nous restons disponibles pour toute information."
+        ];
+
+        // Affichage/fermeture du chatbot
+        openChatbot.onclick = () => chatbotBox.classList.remove('hidden');
+        closeChatbot.onclick = () => chatbotBox.classList.add('hidden');
+
+        // Affiche les messages du client et du bot
+        function renderChat() {
+            const messages = JSON.parse(localStorage.getItem('chatbotMessages') || '[]');
+            chatMessages.innerHTML = '';
+            messages.slice(-10).forEach(msg => {
+                chatMessages.innerHTML += `<div class="mb-1"><span class="font-semibold">${msg.from === 'client' ? 'Vous' : 'Bot'} :</span> ${msg.text}</div>`;
+            });
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        renderChat();
+
+        // Envoi d'un message client
+        chatForm.onsubmit = function(e) {
+            e.preventDefault();
+            const text = chatInput.value.trim();
+            if (!text) return;
+            let messages = JSON.parse(localStorage.getItem('chatbotMessages') || '[]');
+            messages.push({from: 'client', text});
+            // Réponse automatique du bot
+            const botText = botReplies[Math.floor(Math.random() * botReplies.length)];
+            messages.push({from: 'bot', text: botText});
+            // Limite à 20 messages (10 échanges)
+            messages = messages.slice(-20);
+            localStorage.setItem('chatbotMessages', JSON.stringify(messages));
+            chatInput.value = '';
+            renderChat();
+        };
     </script>
 </body>
 </html>
