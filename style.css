@@ -1,0 +1,104 @@
+#logo{
+    clip-path: circle(50%);
+}
+/* Custom styles for Inter font */
+body {
+    font-family: 'Inter', sans-serif;
+    @apply bg-gray-50 text-gray-800;
+}
+/* Adjust body padding to prevent content from being hidden by fixed navigation bar */
+@media (max-width: 767px) {
+    body {
+        padding-bottom: 72px; /* Space for fixed bottom navigation on mobile */
+    }
+    /* Réduction du bouton Administrateur sur mobile */
+    #adminButton {
+        font-size: 0.95rem;
+        padding: 0.5rem 1rem;
+        min-width: 90px;
+        border-radius: 0.5rem;
+    }
+    /* Grille des services et photos 2 par 2 sur mobile */
+    #accueil .grid,
+    .service-detail-section .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 0.75rem;
+    }
+}
+/* Styles for the admin modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+.modal-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    max-width: 28rem;
+    width: 91.666667%;
+    text-align: center;
+    position: relative;
+}
+.modal-close-button {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    color: #6b7280;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.modal-close-button:hover {
+    color: #1f2937;
+}
+/* Styles for service detail sections */
+.service-detail-section {
+    display: none; /* Hidden by default */
+}
+/* Keyframe for a subtle fade-in effect */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+header {
+    background-image: linear-gradient(rgba(17, 24, 39, 0), rgba(17, 24, 39, 0.42)), url('images/a_propos.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Section À propos : même disposition mobile/PC */
+#a-propos .flex {
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+}
+#a-propos .md\:w-1\/2 {
+    width: 50%;
+}
+@media (max-width: 767px) {
+    #a-propos .flex {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+    #a-propos .md\:w-1\/2 {
+        width: 100%;
+        max-width: 100%;
+    }
+    #logo {
+        width: 60px;
+        height: 60px;
+        clip-path: circle(50%);
+    }
+}

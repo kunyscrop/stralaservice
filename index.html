@@ -7,40 +7,9 @@
     <!-- Chargement de Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <style>
-        /* Custom styles for Inter font */
-        body {
-            font-family: 'Inter', sans-serif;
-            @apply bg-gray-50 text-gray-800;
-        }
-        /* Adjust body padding to prevent content from being hidden by fixed navigation bar */
-        @media (max-width: 767px) {
-            body {
-                padding-bottom: 72px; /* Space for fixed bottom navigation on mobile */
-            }
-        }
-        /* Styles for the admin modal */
-        .modal-overlay {
-            @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1000];
-        }
-        .modal-content {
-            @apply bg-white p-8 rounded-lg shadow-2xl max-w-md w-11/12 text-center relative;
-        }
-        .modal-close-button {
-            @apply absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl font-bold cursor-pointer;
-        }
-        /* Styles for service detail sections */
-        .service-detail-section {
-            display: none; /* Hidden by default */
-        }
-        /* Keyframe for a subtle fade-in effect */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fadeIn {
-            animation: fadeIn 0.6s ease-out forwards;
-        }
+        
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -50,7 +19,8 @@
                    fixed top-0 left-0 w-full
                    md:relative md:flex md:justify-between md:items-center">
         <div class="flex justify-between items-center w-full md:w-auto">
-            <h1 class="text-3xl font-bold tracking-tight rounded-md p-2">STRALA Service</h1>
+            <img id="logo" src="images/logo/logo A.jpg" alt="logo" width="100">
+            
             <!-- Administrator Button (visible on all screen sizes) -->
             <button id="adminButton" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out
                                            md:ml-4">
@@ -83,7 +53,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     <!-- Service Card: Plafond -->
                     <div class="service-card cursor-pointer bg-gray-50 border border-gray-200 rounded-xl shadow-md overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out" data-service="plafond">
-                        <img src="https://placehold.co/600x400/E0E7FF/3F51B5?text=Plafond" alt="Image de Plafond" class="w-full h-48 object-cover">
+                        <img src="images/logo/plafond-1 2x2.jpeg" alt="Image de Plafond" class="w-full h-48 object-cover">
                         <div class="p-6">
                             <h3 class="text-2xl font-semibold text-gray-800 mb-2">Plafond</h3>
                             <p class="text-gray-600">Conception et installation de plafonds modernes, suspendus ou décoratifs pour tous types d'espaces.</p>
@@ -91,7 +61,7 @@
                     </div>
                     <!-- Service Card: Peinture -->
                     <div class="service-card cursor-pointer bg-gray-50 border border-gray-200 rounded-xl shadow-md overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out" data-service="peinture">
-                        <img src="https://placehold.co/600x400/E0E7FF/3F51B5?text=Peinture" alt="Image de Peinture" class="w-full h-48 object-cover">
+                        <img src="images/logo/peinture-3.jpeg" alt="Image de Peinture" class="w-full h-48 object-cover">
                         <div class="p-6">
                             <h3 class="text-2xl font-semibold text-gray-800 mb-2">Peinture</h3>
                             <p class="text-gray-600">Application de peintures intérieures et extérieures avec des finitions impeccables et durables.</p>
@@ -99,7 +69,7 @@
                     </div>
                     <!-- Service Card: Carrelage -->
                     <div class="service-card cursor-pointer bg-gray-50 border border-gray-200 rounded-xl shadow-md overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out" data-service="carrelage">
-                        <img src="https://placehold.co/600x400/E0E7FF/3F51B5?text=Carrelage" alt="Image de Carrelage" class="w-full h-48 object-cover">
+                        <img src="images/logo/carrelage.jpeg" alt="Image de Carrelage" class="w-full h-48 object-cover">
                         <div class="p-6">
                             <h3 class="text-2xl font-semibold text-gray-800 mb-2">Carrelage</h3>
                             <p class="text-gray-600">Pose professionnelle de carrelage au sol et mural, pour un rendu esthétique et résistant.</p>
@@ -107,7 +77,7 @@
                     </div>
                     <!-- Service Card: Installation Électrique -->
                     <div class="service-card cursor-pointer bg-gray-50 border border-gray-200 rounded-xl shadow-md overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out" data-service="installation-electrique">
-                        <img src="https://placehold.co/600x400/E0E7FF/3F51B5?text=Installation+Electrique" alt="Image d'Installation Électrique" class="w-full h-48 object-cover">
+                        <img src="images/logo/installation electricque.jpeg" alt="Image d'Installation Électrique" class="w-full h-48 object-cover">
                         <div class="p-6">
                             <h3 class="text-2xl font-semibold text-gray-800 mb-2">Installation Électrique</h3>
                             <p class="text-gray-600">Solutions complètes pour vos installations électriques, conformes aux normes de sécurité.</p>
@@ -115,7 +85,7 @@
                     </div>
                     <!-- Service Card: Mastiquage des Murs -->
                     <div class="service-card cursor-pointer bg-gray-50 border border-gray-200 rounded-xl shadow-md overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out" data-service="mastiquage-murs">
-                        <img src="https://placehold.co/600x400/E0E7FF/3F51B5?text=Mastiquage+des+Murs" alt="Image de Mastiquage des Murs" class="w-full h-48 object-cover">
+                        <img src="images/logo/mur-1.jpeg" alt="Image de Mastiquage des Murs" class="w-full h-48 object-cover">
                         <div class="p-6">
                             <h3 class="text-2xl font-semibold text-gray-800 mb-2">Mastiquage des Murs</h3>
                             <p class="text-gray-600">Préparation minutieuse des surfaces murales pour une base lisse avant peinture ou tapisserie.</p>
@@ -123,7 +93,7 @@
                     </div>
                     <!-- Service Card: Décoration Interne des Maisons -->
                     <div class="service-card cursor-pointer bg-gray-50 border border-gray-200 rounded-xl shadow-md overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out" data-service="decoration-interne">
-                        <img src="https://placehold.co/600x400/E0E7FF/3F51B5?text=Decoration+Interne" alt="Image de Décoration Interne" class="w-full h-48 object-cover">
+                        <img src="images/logo/maison  v.jpeg" alt="Image de Décoration Interne" class="w-full h-48 object-cover">
                         <div class="p-6">
                             <h3 class="text-2xl font-semibold text-gray-800 mb-2">Décoration Interne des Maisons</h3>
                             <p class="text-gray-600">Aménagement et décoration d'intérieur pour créer des espaces uniques et personnalisés.</p>
@@ -230,12 +200,12 @@
                     Découvrez l'importance du mastiquage pour des murs parfaitement lisses.
                 </p>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                    <img src="images/peint/mur-1.jpeg" alt="Image de Mastiquage 1" class="w-full h-48 object-cover rounded-lg shadow-md">
-                    <img src="images/peint/mur-1.jpeg" alt="Image de Mastiquage 2" class="w-full h-48 object-cover rounded-lg shadow-md">
-                    <img src="images/peint/mur-1.jpeg" alt="Image de Mastiquage 3" class="w-full h-48 object-cover rounded-lg shadow-md">
-                    <img src="images/peint/mur-1.jpeg" alt="Image de Mastiquage 4" class="w-full h-48 object-cover rounded-lg shadow-md">
-                    <img src="images/peint/mur-1.jpeg" alt="Image de Mastiquage 5" class="w-full h-48 object-cover rounded-lg shadow-md">
-                    <img src="images/peint/mur-1.jpeg" alt="Image de Mastiquage 6" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="images/murs/a4bd1687-d8f2-4af7-a7e1-e90c78568415.jpeg" alt="Image de Mastiquage 1" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="images/murs/ENDUIT FAÇADE _ CRÉPI GRAIN FIN Enduit façade….jpeg" alt="Image de Mastiquage 2" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="images/murs/La moisissure sur les murs en béton, peint ou….jpeg" alt="Image de Mastiquage 3" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="images/murs/petit roman photo du mur qui a décidé de se….jpeg" alt="Image de Mastiquage 4" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="images/murs/Petite ou grosse, les étapes pour reboucher une….jpeg" alt="Image de Mastiquage 5" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <img src="images/murs/Préparer sa pièce pour des travaux de peinture.jpeg" alt="Image de Mastiquage 6" class="w-full h-48 object-cover rounded-lg shadow-md">
                 </div>
                 <h3 class="text-2xl font-bold text-gray-900 mb-4">Notre Expertise en Mastiquage des Murs</h3>
                 <p class="text-gray-700 leading-relaxed">
@@ -306,7 +276,11 @@
                     <p class="text-gray-700 leading-relaxed mb-4">
                         Notre équipe est composée d'experts qualifiés et dévoués, chacun apportant son savoir-faire unique dans des domaines tels que la peinture, le carrelage, les installations électriques, et la décoration intérieure. Nous croyons en une approche personnalisée, où chaque projet est traité avec une attention méticuleuse aux détails et un respect strict des délais.
                     </p>
-                    <p class="text-gray-700 leading-relaxed">
+                    <div class="flex justify-end items-center mt-6">
+                        <span class="text-lg font-semibold text-gray-800 mr-2">Téléphone :</span>
+                        <a href="tel:+243972625065" class="text-blue-600 hover:underline text-xl font-bold tracking-wider">+243 97 26 25 065</a>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed mt-4">
                         Chez STRALA Service, nous ne construisons pas seulement des bâtiments, nous bâtissons des relations durables basées sur la confiance et l'excellence. Votre satisfaction est le moteur de notre succès.
                     </p>
                 </div>
@@ -328,7 +302,7 @@
                 </p>
                 <p class="flex items-center">
                     <svg class="w-6 h-6 mr-3 text-blue-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l1.3 9.137a1 1 0 01-.285.836l-2.542 2.542a1 1 0 00-.285.836v.001c.154.545.688.836 1.233.836h6.172c.545 0 1.079-.291 1.233-.836v-.001a1 1 0 00-.285-.836l-2.542-2.542a1 1 0 01-.285-.836l1.3-9.137A1 1 0 0116.847 2H19a1 1 0 011 1v14a1 1 0 01-1 1H3a1 1 0 01-1-1V3z"></path></svg>
-                    <strong>Appel:</strong> <a href="tel:+243976116614" class="text-blue-600 hover:underline ml-2">+243 972625065</a>
+                    <strong>Appel:</strong> <a href="tel:+243972625065" class="text-blue-600 hover:underline ml-2">+243 97 26 25 065</a>
                 </p>
                 <p class="flex items-center">
                     <svg class="w-6 h-6 mr-3 text-blue-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l1.3 9.137a1 1 0 01-.285.836l-2.542 2.542a1 1 0 00-.285.836v.001c.154.545.688.836 1.233.836h6.172c.545 0 1.079-.291 1.233-.836v-.001a1 1 0 00-.285-.836l-2.542-2.542a1 1 0 01-.285-.836l1.3-9.137A1 1 0 0116.847 2H19a1 1 0 011 1v14a1 1 0 01-1 1H3a1 1 0 01-1-1V3z"></path></svg>
